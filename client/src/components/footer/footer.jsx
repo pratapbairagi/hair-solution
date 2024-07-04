@@ -1,6 +1,9 @@
-import {NavLink} from "react-router-dom"
+import {NavLink, useLocation} from "react-router-dom"
 
 const Footer = () => {
+    const location = useLocation();
+
+    if(location.pathname !== "/auth" ){
     return (
         <>
             <footer className="size-md bg-gray-700 text-gray-400 px-6 py-8">
@@ -32,6 +35,9 @@ const Footer = () => {
                             </li>
                             <li>
                                 <NavLink to="/gallery" >Gallery</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/contact" >Contact</NavLink>
                             </li>
                             <li>
                                 <NavLink to="/support" >Testimonial</NavLink>
@@ -91,8 +97,8 @@ const Footer = () => {
                     <div className="flex flex-col col-span-12 ">
                         <h3 className="text-lg text-gray-300">Newsletter</h3>
                         <div className="flex flex-col items-center gap-y-1 mt-3.5">
-                            <textarea className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px]" placeholder="Type your requirement..." name="" id="" rows={5}></textarea>
-                            <input className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px]" type="email" placeholder="Your email id here" />
+                            <textarea className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px]" placeholder="Type your requirement..." name="requirement" id="" rows={5}></textarea>
+                            <input autoComplete className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px]" type="email" name="email" id="email" placeholder="Your email id here" />
                             <button className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px] bg-yellow-600 text-gray-100 font-semibold">SEND</button>
                         </div>
 
@@ -108,6 +114,7 @@ const Footer = () => {
             </div>
         </>
     )
+    }
 };
 
 export default Footer;

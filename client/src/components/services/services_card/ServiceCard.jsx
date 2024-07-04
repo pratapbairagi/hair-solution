@@ -66,7 +66,7 @@ const ServiceCard = ({ values = {}, onClick_toggle = () => "", id = "", activeDe
                 </div>
 
                 <div className="service_icon">
-                    <img src={values.image.url} className="w-16 aspect-square object-cover" alt="" />
+                    <img src={values.image.url} className="h-16 aspect-square object-cover" alt="" />
                 </div>
 
                 <h6 className="service_title text-orange-500 text-md font-bold text-left mt-4 capitalize">{values.title}</h6>

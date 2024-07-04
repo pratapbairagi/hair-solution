@@ -1,0 +1,123 @@
+[
+    {
+        "type" : "product",
+        "title" : "Hair Wig Related Purchase And Its Terms and Conditions",
+        "points" : [
+            {
+                "heading" : "Product Quality : ",
+                "more" : [
+                    "All wigs are crafted from high-quality materials. Variations in color and texture may occur due to the nature of the materials used."
+                ]
+            },
+            {
+                "heading" : "Payment : ",
+                "more" : [
+                    "Full payment is required at the time of purchase. We accept various payment methods including credit/debit cards, PayPal, and bank transfers."
+                ]
+            },
+            {
+                "heading" : "Shipping and Delivery : ",
+                "more" : [
+                    "Orders are processed within 1-3 business days.",
+                    "Delivery times vary based on location. Standard shipping usually takes 5-7 business days.",
+                    "Expedited shipping is available at an additional cost.",
+                    "Custom-made wigs are non-returnable and non-exchangeable."
+                ]
+            },
+            {
+                "heading" : "Cancellation Policy : ",
+                "more" : [
+                    "If you order a customized hair piece ( custom order ) that cannot be cancelled after order."
+                ]
+            },
+            {
+                "heading" : "Warranty : ",
+                "more" : [
+                    "Wigs come with life a that depend on Hair wig Quality ."
+                ]
+            },
+            {
+                "heading" : "Privacy : ",
+                "more" : [
+                    "Customer information is kept confidential and is used solely for the purpose of processing orders and providing services."
+                ]
+            },
+            {
+                "heading" : "Liability : ",
+                "more" : [
+                    "The company is not liable for any allergic reactions or adverse effects from wearing the wigs.",
+                    "Customers are advised to perform a patch test if they have sensitive skin or known allergies."
+                ]
+            }
+        ]
+    },
+    {
+        "type" : "service",
+        "title" : "Hair Wig Maintenance Related Terms and Conditions",
+        "points" : [
+            {
+                "heading" : "Service Description : ",
+                "more" : [
+                    "Maintenance services include washing, conditioning, detangling, and styling of wigs.",
+                    "Additional services such as re-coloring, re-styling, or repairs are available at an extra cost."
+                ]
+            },
+            {
+                "heading" : "Appointment Scheduling : ",
+                "more" : [
+                    "Maintenance services are by appointment only.",
+                    "Appointments can be scheduled via phone, email, or our website."
+                ]
+            },
+            {
+                "heading" : "Payment for Services : ",
+                "more" : [
+                    "We accept various payment methods including credit/debit cards, PayPal, and cash."
+                ]
+            },
+            {
+                "heading" : "Service Time : ",
+                "more" : [
+                    "The time required for maintenance services varies based on the condition and type of wig.",
+                    "Customers will be informed of the estimated time upon appointment booking."
+                ]
+            },
+            {
+                "heading" : "Customer Obligations : ",
+                "more" : [
+                    "Wigs must be delivered to the service location clean and free of any adhesives or styling products.",
+                    "The company reserves the right to refuse service for wigs that are excessively dirty or damaged."
+                ]
+            },
+            {
+                "heading" : "Liability : ",
+                "more" : [
+                    "The company is not responsible for any damage to wigs caused by previous improper maintenance or care.",
+                    "Customers are responsible for informing the service provider of any specific care instructions or concerns regarding their wig"
+                ]
+            },
+            {
+                "heading" : "Privacy : ",
+                "more" : [
+                    "Customer information is kept confidential and is used solely for the purpose of providing maintenance services."
+                ]
+            }
+        ]
+    },
+    {
+        "type" : "Additional",
+        "title" : "Note",
+        "points" : [
+            {
+                "heading" : "Additional Note : ",
+                "more" : [
+                    "Always refer to the care instructions provided with your wig for optimal maintenance.",
+                    "Regular maintenance is recommended to extend the lifespan of your wig and keep it looking its best."
+                ]
+            }
+        ]
+    }
+
+
+
+]

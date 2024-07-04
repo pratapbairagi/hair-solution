@@ -16,17 +16,17 @@ const HeroSection = () => {
                     {/* <img src={hairPatch2} className="block lg:hidden absolute right-0 h-[75vh] bottom-0 z-0 opacity-20" alt="" /> */}
 
                     <ul className="flex lg:hidden gap-x-2 absolute left-[50%] top-4 z-10" style={{transform:"translate(-50%, 0)"}}>
-                        <li className="w-16 border border-2 border-orange-500 aspect-square rounded-full overflow-hidden">
-                            <img src={hair2_} className="w-[100%]" alt="" />
+                        <li className="w-max border border-2 border-orange-500 aspect-square rounded-full overflow-hidden">
+                            <img src={hair2_} className="h-16 aspect-square" alt="" />
                         </li>
-                        {/* <li className="w-16">
-                            <img src={hair1_} className="w-[100%]" alt="" />
+                        {/* <li className="w-max">
+                            <img src={hair1_} className="h-16 aspect-square" alt="" />
                         </li> */}
-                        <li className="w-16 border border-2 border-orange-500 aspect-square rounded-full overflow-hidden">
-                            <img src={hair3_} className="w-[100%]" alt="" />
+                        <li className="w-max border border-2 border-orange-500 aspect-square rounded-full overflow-hidden">
+                            <img src={hair3_} className="h-16 aspect-square" alt="" />
                         </li>
-                        <li className="w-16 border border-2 border-orange-500 aspect-square rounded-full overflow-hidden">
-                            <img src={hair4_} className="w-[100%]" alt="" />
+                        <li className="w-max border border-2 border-orange-500 aspect-square rounded-full overflow-hidden">
+                            <img src={hair4_} className="h-16 aspect-square" alt="" />
                         </li>
                         
                     </ul>

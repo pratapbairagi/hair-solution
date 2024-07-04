@@ -24,8 +24,6 @@ const AddProductForm = () => {
     const dispatch = useDispatch();
     const { success, loading, error, products, product, message } = useSelector(state => state.products)
 
-    console.log("state ", location.state)
-
     const fieldsetClassName = "col-span-12 md:col-span-7 md:px-2 flex flex-col  mt-4 md:mt-6 gap-y-1";
     const labelClassName = "text-xs text-gray-500 font-semibold block text-start";
     const inputClassName = "block text-sm px-2 py-0.5 text-gray-400 rounded-sm bg-gray-100";
@@ -67,87 +65,60 @@ const AddProductForm = () => {
 
     useEffect(() => {
         let toastId = null;
-        
-            if (loading) {
-                toastId = toast.loading("Please wait...", {
-                    position: "bottom-left"
-                });
-    
+
+        if (loading) {
+            toastId = toast.loading("Please wait...", {
+                position: "bottom-left"
+            });
+
+        }
+
+        if (success && message) {
+            toast.update(toastId, {
+                render: message,
+                position: "bottom-left",
+                type: "success",
+                isLoading: false,
+                autoClose: "4000"
+            })
+        }
+
+        if (error && message) {
+            toast.update(toastId, {
+                render: message,
+                position: "bottom-left",
+                type: "error",
+                isLoading: false,
+                autoClose: "4000"
+            })
+        }
+
+        return () => {
+            if (toastId) {
+                toast.dismiss(toastId);
             }
-            
-            if (success && message) {
-                toast.update(toastId, {
-                    render: message,
-                    position: "bottom-left",
-                    type: "success",
-                    isLoading: false,
-                    autoClose: "4000"
-                })
-            }
-    
-            if (error && message) {
-                toast.update(toastId, {
-                    render: message,
-                    position: "bottom-left",
-                    type: "error",
-                    isLoading: false,
-                    autoClose: "4000"
-                })
-            }
-    
-            return () => {
-                if (toastId) {
-                    toast.dismiss(toastId);
-                }
-            };
-    
-        }, [error, success, message, loading])
+        };
+
+    }, [error, success, message, loading])
 
     const create_product_handler = async (formType) => {
 
+        if(location.state){
         // dispatch(product_postORupdate({ data: createForm, id: location.state._id, type: formType, state: location.state }))
-       dispatch(createOrUpdateProduct({ data: createForm, id: location.state._id, type: formType, state: location.state }))
-        // try {
-        //     let url = "https://hair-solution.vercel.app"
-        //     const toastId = toast.loading("Please wait...", {
-        //         position : "bottom-left"
-        //     })
-        //      url = formType === "update" && location.state ? `${url}/api/app/productUpdate/${location.state._id}` : `${url}/api/app/productCreate` 
-        //     const config = {
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         }
-        //     };
+        dispatch(createOrUpdateProduct({ data: createForm, id: location.state._id, type: formType, state: location.state }))
+        }
+        else{
+        dispatch(createOrUpdateProduct({ data: createForm, type: formType }))
 
-        //     await axios[formType === "add" ? "post" : "put"](url, createForm, config).then((res) => {
-        //         if(res.data.success){
-        //         toast.update(toastId, {
-        //             render : res.data.message,
-        //             position : "bottom-left",
-        //             type : "success",
-        //             isLoading : false,
-        //             autoClose : "4000"
-        //         })
-        //         }
-        //     }).catch((err) => {
-        //         toast.update(toastId, {
-        //             render : err.response.message,
-        //             position : "bottom-left",
-        //             type : "error",
-        //             isLoading : false,
-        //             autoClose : "4000"
-        //         })
-        //         console.log(err)
-        //     })
-
-        // } catch (error) {
-        //     toast.error(error.response.data.message)
-        // }
+        }
     }
 
 
+
     useEffect(() => {
+        let timeoutId = null;
         if (location.state) {
+             timeoutId = setTimeout(()=>{
             let obj = {}
             for (const key in location.state) {
                 if (key === "image") {
@@ -159,8 +130,16 @@ const AddProductForm = () => {
             }
             setCreateForm(obj)
 
+        },1000)
+
         }
-    }, [location]);
+
+        return () => {
+            if(timeoutId){
+                clearTimeout(timeoutId)
+            }
+        }
+    }, [location.state]);
 
     // for optimization
     const types = useMemo(() => {
@@ -203,8 +182,6 @@ const AddProductForm = () => {
         })
     }, [createForm])
 
-    console.log("valuess ", createForm)
-
     return (
         <>
             <div className="w-full h-max bg-gray-100 min-h-[186vh]">
@@ -227,18 +204,18 @@ const AddProductForm = () => {
                             paragraphText="Fill all necessary details related to New Product or Service !" paragraphTitle="Fill all necessary details related to New Product or Service !"
                         />
 
-                        <Input inputOnchangeFun={formInputHandler} inputName="title" inputType="text" inputDefaultValue={createForm.title} labelHtmlFor="#title" labelText="Title" fieldsetClassName={fieldsetClassName} labelClassName={labelClassName} inputClassName={inputClassName} />
+                        <Input inputOnchangeFun={formInputHandler} inputName="title" inputType="text" inputDefaultValue={createForm.title} labelHtmlFor="title" labelText="Title" fieldsetClassName={fieldsetClassName} labelClassName={labelClassName} inputClassName={inputClassName} />
 
                         <fieldset className="col-span-7 lg:col-span-4 flex flex-wrap gap-x-2 items-center px-2 py-1 my-2 h-full">
                             <span className="w-full text-xs font-semibold text-gray-500 text-start">Type</span>
-                            <label htmlFor="#product" className={labelClassName}>Product</label>
+                            <label htmlFor="product" className={labelClassName}>Product</label>
                             <input value="product" onChange={(e) => formInputHandler(e)} type="radio" name="type_" id="product" />
-                            <label htmlFor="#service" className={labelClassName}>Service</label>
+                            <label htmlFor="service" className={labelClassName}>Service</label>
                             <input value="service" onChange={(e) => formInputHandler(e)} type="radio" name="type_" id="service" />
                         </fieldset>
 
                         <fieldset className="col-span-5 lg:col-span-4 flex flex-wrap gap-x-2 items-center px-2 py-1 my-2">
-                            <label htmlFor="#image" className="w-full text-xs font-semibold text-gray-500 text-start mb-1 flex gap-x-2">Image <span className="text-sm text-red-600"> * </span></label>
+                            <label htmlFor="image" className="w-full text-xs font-semibold text-gray-500 text-start mb-1 flex gap-x-2">Image <span className="text-sm text-red-600"> * </span></label>
                             <span className="relative w-[12] border">
                                 <input type="file" onChange={(e) => formInputHandler(e)} accept="image/*" className="absolute z-0 opacity-0 h-full w-full" name="image" id="image" />
                                 <PhotoIcon className="w-10 h-10" />
@@ -248,44 +225,46 @@ const AddProductForm = () => {
 
                         <fieldset className="col-span-6 lg:col-span-4 flex flex-wrap gap-x-2 items-center px-2 py-1 my-2">
                             <span className="w-full text-xs font-semibold text-gray-500 text-start mb-2 gap-x-2">Gender <span className="text-sm text-red-600"> * </span></span>
-                            <label htmlFor="#male" className={labelClassName}>Male</label>
+                            <label htmlFor="male" className={labelClassName}>Male</label>
                             <input value="male" onChange={(e) => formInputHandler(e)} type="checkbox" name="gender" id="male" className={{}} />
-                            <label htmlFor="#female" className={labelClassName}>Female</label>
+                            <label htmlFor="female" className={labelClassName}>Female</label>
                             <input value="female" onChange={(e) => formInputHandler(e)} type="checkbox" name="gender" id="female" className={{}} />
                         </fieldset>
 
+                        {createForm.type_ === "product" && <>
+                            <fieldset className="col-span-12 lg:col-span-6 flex flex-wrap gap-x-2 items-center px-2 py-1 my-1">
+                                <span className="w-full text-xs font-semibold text-gray-500 text-start mb-1">Add Types</span>
+                                <input onChange={(e) => formInputHandler(e)} type="text" id="types" name="types" className="h-6 w-[80%] bg-gray-100 text-xs py-0.5 px-2 text-gray-400 font-semibold" />
+                                <button onClick={() => {
+                                    setCreateForm({
+                                        ...createForm,
+                                        types: [...createForm.types, document.getElementById("types").value.toLowerCase()]
+                                    });
+                                    document.getElementById("types").value = ""
+                                }
+                                } className="text-xs font-semibold text-gray-500 py-1 px-2 bg-gray-100">Add</button>
+                                <span className="w-full flex flex-wrap gap-x-1.5 gap-y-1 mt-2">
+                                    {types}
+                                </span>
+                            </fieldset>
 
-                        <fieldset className="col-span-12 lg:col-span-6 flex flex-wrap gap-x-2 items-center px-2 py-1 my-1">
-                            <span className="w-full text-xs font-semibold text-gray-500 text-start mb-1">Add Types</span>
-                            <input onChange={(e) => formInputHandler(e)} type="text" id="types" name="types" className="h-6 w-[80%] bg-gray-100 text-xs py-0.5 px-2 text-gray-400 font-semibold" />
-                            <button onClick={() => {
-                                setCreateForm({
-                                    ...createForm,
-                                    types: [...createForm.types, document.getElementById("types").value.toLowerCase()]
-                                });
-                                document.getElementById("types").value = ""
-                            }
-                            } className="text-xs font-semibold text-gray-500 py-1 px-2 bg-gray-100">Add</button>
-                            <span className="w-full flex flex-wrap gap-x-1.5 gap-y-1 mt-2">
-                                {types}
-                            </span>
-                        </fieldset>
-
-                        <fieldset className="col-span-12 lg:col-span-6 flex flex-wrap gap-x-2 items-center px-2 py-1 my-1">
-                            <span className="w-full text-xs font-semibold text-gray-500 text-start mb-1">Add Sizes</span>
-                            <input onChange={(e) => formInputHandler(e)} type="text" id="sizes" name="sizes" className="h-6 w-[80%] bg-gray-100 text-xs py-0.5 px-2 text-gray-400 font-semibold" />
-                            <button onClick={() => {
-                                setCreateForm({
-                                    ...createForm,
-                                    sizes: [...createForm.sizes, document.getElementById("sizes").value.toLowerCase()]
-                                });
-                                document.getElementById("sizes").value = ""
-                            }
-                            } className="text-xs font-semibold text-gray-500 py-1 px-2 bg-gray-100">Add</button>
-                            <span className="w-full flex flex-wrap gap-x-1.5 mt-2 gap-y-1">
-                                {sizes}
-                            </span>
-                        </fieldset>
+                            <fieldset className="col-span-12 lg:col-span-6 flex flex-wrap gap-x-2 items-center px-2 py-1 my-1">
+                                <span className="w-full text-xs font-semibold text-gray-500 text-start mb-1">Add Sizes</span>
+                                <input onChange={(e) => formInputHandler(e)} type="text" id="sizes" name="sizes" className="h-6 w-[80%] bg-gray-100 text-xs py-0.5 px-2 text-gray-400 font-semibold" />
+                                <button onClick={() => {
+                                    setCreateForm({
+                                        ...createForm,
+                                        sizes: [...createForm.sizes, document.getElementById("sizes").value.toLowerCase()]
+                                    });
+                                    document.getElementById("sizes").value = ""
+                                }
+                                } className="text-xs font-semibold text-gray-500 py-1 px-2 bg-gray-100">Add</button>
+                                <span className="w-full flex flex-wrap gap-x-1.5 mt-2 gap-y-1">
+                                    {sizes}
+                                </span>
+                            </fieldset>
+                        </>
+                        }
 
                         <fieldset className="col-span-12 lg:col-span-6 flex flex-wrap gap-x-2 items-center px-2 py-1 my-1">
                             <span className="w-full text-xs font-semibold text-gray-500 text-start mb-1">Add Colors</span>
@@ -326,7 +305,7 @@ const AddProductForm = () => {
                             fieldsetClassName="col-span-12 md:col-span-12 md:px-2 flex flex-col mt-2 md:mt-3 gap-y-1"
                             labelClassName="text-xs text-gray-500 font-semibold block text-start"
                             labelText="Describe your requirement *"
-                            labelHtmlFor="#description"
+                            labelHtmlFor="description"
                             textareaClassName="block text-sm px-2 py-0.5 text-gray-400 rounded-sm bg-gray-100"
                             textareaName="description"
                             textareaText=""

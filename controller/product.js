@@ -125,9 +125,26 @@ exports.productUpdate = async (req, res, next) => {
 
 exports.productDelete = async (req, res, next) => {
     try {
+        const isProductExist = await Product.findById(req.params.id);
+
+        if(!isProductExist){
+            return next( new ErrorHandler( "Products does not exist or deleted !", 404 ))
+        };
+
+        await cloudinary.uploader.destroy(isProductExist.image.public_id);
+
+        await Product.findByIdAndDelete(isProductExist._id);
+
+        const products = await Product.find();
+
+        res.status(200).json({
+            success : true,
+            message : "Product deleted successfully !",
+            products : products
+        });
 
     } catch (error) {
-
+        return next(new ErrorHandler(error))
     }
 }
 

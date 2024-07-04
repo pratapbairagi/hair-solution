@@ -4,168 +4,45 @@ import ServiceCard from "./services_card/ServiceCard";
 import "./services.css"
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-// import clip from "./images/clip.jpg"
-// import glue from "./images/glue.jpg"
-// import tape from "./images/tape.jpg"
-// import hair_topper from "./images/hair_topper.jpg"
-// import hair_patch from "./images/hair_patch_men.jpg"
-// import remover from "./images/remover.jpg"
-// import hair_wig from "./images/hair_wig.jpg"
-// import scalp_protector from "./images/scalp-protector.jpg"
+import { useSelector } from "react-redux";
+import { onClick_toggle_handler } from "../../helper/cardToggle_handler";
 
-// import fixing from "./images/fixing.png"
-// import maintaining from "./images/maintaining.jpg"
-// import cutting from "./images/cutting.png"
 
-const Services = ({data}) => {
+const Services = ({products, setActiveDetails, activeDetails}) => {
 
     // const [activeDetailsToggle, setActiveDetailsToggle] = useState(false)
-    const [activeDetails, setActiveDetails] = useState({})
-    
-    
+    // const [activeDetails, setActiveDetails] = useState({})
+    // const {products, loading, success, message, error} = useSelector(state=> state.products);
 
-    // const productAndServices_data = [
-    //     {
-    //         title : "Hair Wig",
-    //         image : hair_wig,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : ["women"],
-    //         size : [],
-    //         color : [],
-    //         type : []
-    //     },
-    //     {
-    //         title : "Hair Patch",
-    //         image : hair_patch,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : ["men"],
-    //         size : ["All Size Available"],
-    //         color : [],
-    //         type : ["Mono Base", "Octagon", "Full lace", "Mirage", "Front Less Mirage", "Australian Mirage", "Australian", "Transparent Poly", "Custmize"]
-    //     },
-    //     {
-    //         title : "Hair Topper",
-    //         image : hair_topper,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : ["women"],
-    //         size : ["Different Size Available"],
-    //         color : [],
-    //         type : []
-    //     },
-    //     {
-    //         title : "Hair Fixing Tape",
-    //         image : tape,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : ["women", "men"],
-    //         size : [],
-    //         color : [],
-    //         type : ["White Tape", "Red Tape", "Balue Tape", "No shine Tape"]
-    //     },
-    //     {
-    //         title : "Hair Fixing Glue",
-    //         image : glue,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : ["women", "men"],
-    //         size : [],
-    //         color : [],
-    //         type : []
-    //     },
-    //     {
-    //         title : "Glue/Tape Remover",
-    //         image : remover,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : ["women", "men"],
-    //         size : [],
-    //         color : [],
-    //         type : []
-    //     },
-    //     {
-    //         title : "Hair Wig Clip",
-    //         image : clip,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : ["women", "men"],
-    //         size : ["small", "medium"],
-    //         color : [],
-    //         type : []
-    //     },
-    //     {
-    //         title : "Hair Patch Fixing",
-    //         image : fixing,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "service",
-    //         gender : ["men"],
-    //         size : [],
-    //         color : [],
-    //         type : []
+    const toggle_handler = ({id, values}) => {
+        onClick_toggle_handler({id, values, activeDetails, setActiveDetails})
+    }
 
-    //     },
-    //     {
-    //         title : "Hair Wig/patch Maintaining",
-    //         image : maintaining,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "service",
-    //         gender : ["women", "men"],
-    //         size : [],
-    //         color : [],
-    //         type : []
-    //     },
-    //     {
-    //         title : " Outside Hair Patch Cutting",
-    //         image : cutting,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "service",
-    //         gender : ["men"],
-    //         size : [],
-    //         color : [],
-    //         type : []
-    //     },
-    //     {
-    //         title : "Scalp protector",
-    //         image : scalp_protector,
-    //         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nisi, cumque optio reiciendis esse obcaecati, vitae veniam labore deleniti sint laboriosam consequatur in corrupti dolorem minima iusto eaque molestiae totam. Voluptatem ut maiores autem obcaecati asperiores enim? Sint, natus veritatis quia velit libero praesentium unde in voluptatem, et, odit cupiditate.",
-    //         product_type : "product",
-    //         gender : [],
-    //         size : [],
-    //         color : [],
-    //         type : []
+    // const onClick_toggle_handler = ({id, values}) => {
+
+    //     const active_prod_serv_card_details = document.getElementById(id);
+    //     const paraActive = document.getElementById(id+"p")
+    //     const toggleBtn = document.getElementById(`${id}toggle_btn`)
+
+    //     if(active_prod_serv_card_details.classList.contains("active_prod_serv_card_details")){
+
+    //         active_prod_serv_card_details.classList.remove("active_prod_serv_card_details")
+    //         paraActive?.classList.remove("active_prod_serv_card_details_para")
+    //         toggleBtn?.classList.remove("closeBtn_active")
+    //         setActiveDetails({})
     //     }
-    // ];
+    //     else{
 
-    const onClick_toggle_handler = ({id, values}) => {
-
-        const active_prod_serv_card_details = document.getElementById(id);
-        const paraActive = document.getElementById(id+"p")
-        const toggleBtn = document.getElementById(`${id}toggle_btn`)
-
-        if(active_prod_serv_card_details.classList.contains("active_prod_serv_card_details")){
-            console.log("valuesssss active", values)
-
-            active_prod_serv_card_details.classList.remove("active_prod_serv_card_details")
-            paraActive?.classList.remove("active_prod_serv_card_details_para")
-            toggleBtn?.classList.remove("closeBtn_active")
-            setActiveDetails({})
-        }
-        else{
-            console.log("valuesssss not active", values)
-
-
-            active_prod_serv_card_details.classList.add("active_prod_serv_card_details")
-            paraActive?.classList.add("active_prod_serv_card_details_para")
-            toggleBtn?.classList.add("closeBtn_active")
+    //         active_prod_serv_card_details.classList.add("active_prod_serv_card_details")
+    //         paraActive?.classList.add("active_prod_serv_card_details_para")
+    //         toggleBtn?.classList.add("closeBtn_active")
             
-            setActiveDetails(values)
-        }
-    };
+    //         setActiveDetails(values)
+    //     }
+    // };
 
     const services = useMemo(()=>{
-       return data.filter((v)=>{
+       return products.filter((v)=>{
             return v.type_ === "product"
            }).map((v,i)=>{
                 return <ServiceCard
@@ -178,18 +55,15 @@ const Services = ({data}) => {
                 size={v.sizes}
                 color={v.colors}
                 values={v}
-                onClick_toggle={onClick_toggle_handler}
+                onClick_toggle={toggle_handler}
                 id={v.title+i}
-                // activeDetailsToggle={activeDetailsToggle}
-                // setActiveDetailsToggle={setActiveDetailsToggle}
                 activeDetails={activeDetails}
             />
            })
-    // },[productAndServices_data])
-},[data, activeDetails])
+},[products, activeDetails])
 
-    const products = useMemo(()=>{
-       return data.filter((v)=>{
+    const product = useMemo(()=>{
+       return products.filter((v)=>{
             return v.type_ === "service"
            }).map((v,i)=>{
                 return <ServiceCard
@@ -201,15 +75,14 @@ const Services = ({data}) => {
                 gender={v.gender}
                 size={v.size}
                 color={v.color}
-
                 values={v}
-                onClick_toggle={onClick_toggle_handler}
+                onClick_toggle={toggle_handler}
                 id={v.title+i}
                 activeDetails={activeDetails}
             />
            })
     // },[productAndServices_data])
-},[data, activeDetails])
+},[products, activeDetails])
     return (
         <>
             <div className=" max-w-[96%] mx-auto flex flex-col col-span-12 px-6 rounded py-6 mt-5 h-max min-h-[80vh] relative overflow-hidden" >
@@ -235,9 +108,7 @@ const Services = ({data}) => {
                 
                 <div className="order-4 lg:order-4  col-span-12 lg:col-span-6 grid grid-cols-12 overflow-x-auto gap-x-4 gap-y-3 mt-6 px-3" style={{ alignContent:"flex-start"}}>
                    
-
-                {products}
-                   
+                {product}
                     {/* <Service_card
                         img={patch1_}
                         title="New Patch"
@@ -245,7 +116,6 @@ const Services = ({data}) => {
                     /> */}
 
                 </div>
-
 
                 </div>
 

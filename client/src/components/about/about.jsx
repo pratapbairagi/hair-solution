@@ -26,9 +26,9 @@ const About = () => {
                         <h5 className="#222222  font-semibold w-full text-center lg:text-start text-lg px-8 relative z-10"> We offer the best hair wig treatment <span className="text-orange-500 text-xl font-bold"> in West Bengal </span> </h5>
 
                         <p className="text-md text-gray-500 mt-6 px-8 py-4 text-start max-w-[90%] h-max min-h-[56vh] ml-2 relative z-10 shadow-md" style={{ background: "rgba(255, 255, 255, 0.233)" }}>
-                            <p className="text-md px-8 py-4 text-start min-w-[100%] left-6 top-6 h-max min-h-[56vh] bg-transparent mx-auto absolute z-10 absolute shadow-md" style={{ background: "rgba(255, 255, 255, 0.533)" }}>
+                            <span className="text-md px-8 py-4 text-start min-w-[100%] left-6 top-6 h-max min-h-[56vh] bg-transparent mx-auto absolute z-10 absolute shadow-md" style={{ background: "rgba(255, 255, 255, 0.533)" }}>
                             Hair Patch is a top molded patch made up of normal hair which is utilized to cover baldness. Hair Patch is the best treatment for male baldness. When hair development isn’t conceivable from medications and a man can’t stand to go for hair transplantation (as it is a surgical method), Hair Patch (Non Surgical Method) is the most secure and least demanding method to hide baldness & to have an awesome hair style. We offer the best hair patch treatment in West Bengal.
-                            </p>
+                            </span>
                         </p>
 
                     </div>

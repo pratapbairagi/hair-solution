@@ -1,20 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {
-  CLEAR_ERROR,
-  CLEAR_SUCCESS,
-  PRODUCTS_DETAILS_REQUEST,
-  PRODUCTS_DETAILS_SUCCESS,
-  PRODUCTS_DETAILS_FAILED,
-  PRODUCT_CREATE_OR_UPDATE_REQUEST,
-  PRODUCT_CREATE_OR_UPDATE_SUCCESS,
-  PRODUCT_CREATE_OR_UPDATE_FAILED,
-  PRODUCT_DETAILS_REQUEST,
-  PRODUCT_DETAILS_SUCCESS,
-  PRODUCT_DETAILS_FAILED
-} from '../type/product';
+
 
 const rootUrl = 'https://hair-solution.vercel.app';
+// const rootUrl = 'http://localhost:8000';
 
 export const productSlice = createSlice({
   name: 'products',
@@ -70,6 +59,20 @@ export const productSlice = createSlice({
       state.message = action.payload;
       state.error = true;
     },
+    productDeleteRequest: (state) => {
+      state.loading = true
+    },
+    productDeleteSuccess: (state, action) => {
+      state.loading = false;
+      state.success = true;
+      state.message = action.payload.message;
+      state.products = action.payload.products;
+    },
+    productDeleteFailed: (state, action) => {
+      state.loading = false;
+        state.error = true;
+        state.message = action.payload;
+    },
     clearSuccess: (state) => {
       state.message = '';
       state.error = false;
@@ -91,6 +94,9 @@ export const {
   productDetailsRequest,
   productDetailsSuccess,
   productDetailsFailed,
+  productDeleteRequest,
+  productDeleteSuccess,
+  productDeleteFailed,
   clearSuccess,
   clearError,
 } = productSlice.actions;
@@ -103,35 +109,37 @@ export const fetchProductDetails = () => async (dispatch) => {
     const url = `${rootUrl}/api/app/productDetails`;
     const response = await axios.get(url);
 
-    dispatch(productsDetailsSuccess(response.data));
+    dispatch(productsDetailsSuccess(response?.data));
   } catch (error) {
-    dispatch(productsDetailsFailed(error.response.data.message));
+    dispatch(productsDetailsFailed(error.response?.data.message));
   }
 };
 
 // Thunk for fetching products details
 export const fetchProductsDetails = () => async (dispatch) => {
   try {
+    const abortController = new AbortController()
     dispatch(productsDetailsRequest());
 
     const config = {
-        headers : {
-            "Content-Type" : "application/json",
-            "Access-Control-Allow-Origin" : rootUrl
-        }
+      headers: {
+        "Content-Type": "application/json"
+      },
+      signal : abortController.signal
     }
 
     const url = `${rootUrl}/api/app/productsDetails`;
     const response = await axios.get(url, config);
 
-    dispatch(productsDetailsSuccess(response.data));
+    dispatch(productsDetailsSuccess(response?.data));
 
+    abortController.abort()
     // Clear success message after 5 seconds
     setTimeout(() => {
       dispatch(clearSuccess());
     }, 5000);
   } catch (error) {
-    dispatch(productsDetailsFailed(error.response.data.message));
+    dispatch(productsDetailsFailed(error.response?.data.message));
 
     // Clear error message after 5 seconds
     setTimeout(() => {
@@ -146,10 +154,10 @@ export const createOrUpdateProduct = ({ data, type, id }) => async (dispatch) =>
     dispatch(productCreateOrUpdateRequest());
 
     const config = {
-        headers : {
-            "Content-Type" : "application/json",
-            "Access-Control-Allow-Origin" : rootUrl
-        }
+      headers: {
+        "Content-Type": "application/json"
+        // "Access-Control-Allow-Origin" : rootUrl
+      }
     }
 
     const url =
@@ -160,14 +168,14 @@ export const createOrUpdateProduct = ({ data, type, id }) => async (dispatch) =>
     const method = type === 'update' ? 'put' : 'post';
     const response = await axios[method](url, data, config);
 
-    dispatch(productCreateOrUpdateSuccess(response.data));
+    dispatch(productCreateOrUpdateSuccess(response?.data));
 
     // Clear success message after 5 seconds
     setTimeout(() => {
       dispatch(clearSuccess());
     }, 5000);
   } catch (error) {
-    dispatch(productCreateOrUpdateFailed(error.response.data.message));
+    dispatch(productCreateOrUpdateFailed(error.response?.data.message));
 
     // Clear error message after 5 seconds
     setTimeout(() => {
@@ -175,5 +183,38 @@ export const createOrUpdateProduct = ({ data, type, id }) => async (dispatch) =>
     }, 5000);
   }
 };
+
+export const deleteProduct = ({ id = "" }) => async (dispatch) => {
+  alert(id)
+  try {
+    dispatch(productDeleteRequest());
+
+    const url = `${rootUrl}/api/app/productDelete/${id}`;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+
+    const response = await axios.delete(url)
+
+    dispatch(productDeleteSuccess(response.data));
+
+    // Clear success message after 5 seconds
+    setTimeout(() => {
+      dispatch(clearSuccess());
+    }, 5000);
+
+  } catch (error) {
+    console.log("catch delete error =>> ", error);
+    dispatch(productDeleteFailed(error.response?.data.message));
+
+    // Clear error message after 5 seconds
+    setTimeout(() => {
+      dispatch(clearError());
+    }, 5000);
+  }
+}
 
 export default productSlice.reducer;

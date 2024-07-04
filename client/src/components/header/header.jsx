@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { memo, useState } from 'react'
 import {
   Dialog,
   DialogPanel,
@@ -12,28 +12,27 @@ import {
   Transition
 } from '@headlessui/react';
 import {
-    ArrowPathIcon,
     Bars3Icon,
     ChartPieIcon,
     CursorArrowRaysIcon,
-    FingerPrintIcon,
-    SquaresPlusIcon,
     XMarkIcon
   } from '@heroicons/react/24/outline';
   import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 import { NavLink, useNavigate } from 'react-router-dom';
+import logo from "../../page/authForm/images/pixelcut-export.png"
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+  const userState = useSelector(state=> state.user);
+  const navigate = useNavigate()
+
     const products = [
-        { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-        { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-        { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-        { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-        { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
+        { name: 'Product', description: 'Go to products page and find your required or wanted product easily.', to: '/products', icon: ChartPieIcon },
+        { name: 'Service', description: 'Go to service page and find your required or wanted service easily.', to: '/services', icon: CursorArrowRaysIcon }
       ]
       const callsToAction = [
-        { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-        { name: 'Contact sales', href: '#', icon: PhoneIcon },
+        { name: 'Watch demo', to: '/demo', icon: PlayCircleIcon },
+        { name: 'Book Trial', to: '/trail', icon: PhoneIcon },
       ];
 
       function classNames(...classes) {
@@ -42,19 +41,22 @@ const Header = () => {
 
       const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-      const location = useNavigate() 
-        // <PopoverGroup className="hidden lg:flex items-center lg:gap-x-12 lg:px-12 xl:px-16 lg:h-12 lg:translate-y-3 lg:bg-gray-100 lg:relative" style={{  boxShadow:"0px 1px 0 6px gray", clipPath: "polygon( 9% 0%, 90% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 100%)"}}>
-        
+      const navClose_handler = () => {
+        setMobileMenuOpen(false)
+      }
+
+      const navLinkFun = (to) => {
+        navigate(to)
+      }
 
     return (
         <>
-            <header className="bg-white shadow-sm fixed top-0 w-screen z-20 left-0">
+            <header className="bg-white shadow-sm fixed top-0 w-screen z-30 left-0">
 
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8 lg:py-2   lg:fixed lg:h-max shadow-md top-0 left-0 lg:w-screen lg:bg-white z-20" aria-label="Global">
+      <nav className="mx-auto relative flex max-w-7xl items-center justify-between p-4 lg:px-8 lg:py-2   lg:fixed lg:h-max shadow-md top-0 left-0 lg:w-screen lg:bg-white z-20" aria-label="Global">
         <div className="flex lg:flex-1">
-          <NavLink to="/" className="-m-1.5 p-1.5 flex flex-col w-max">
-            <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-            {/* <span className="text-xs text-red-600">SA</span> */}
+          <NavLink onClick={ navClose_handler} to="/" className="-m-1.5 flex flex-col w-max">
+            <img className="h-14 w-auto" style={{transform:"scale(1.2)"}} src={logo} alt="logo" />
           </NavLink>
         </div>
         <div className="flex lg:hidden">
@@ -72,9 +74,9 @@ const Header = () => {
           <span className='min-w-14 min-h-full flex bg-gray-100 absolute left-0' style={{ borderLeft:"20px solid white", borderRight:"35px solid transparent", borderTop:"48px solid white"}}></span>
           <span className='min-w-14 min-h-full flex bg-gray-100 absolute right-0' style={{borderTop:"48px solid white", borderLeft:"35px solid transparent"}} ></span>
 
-          <Popover className="relative px-3 py-1">
+          <Popover className="relative z-40 px-3 py-1">
             <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 outline-0">
-              Services
+              Category
               <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
             </PopoverButton>
 
@@ -97,10 +99,10 @@ const Header = () => {
                         <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
                       </div>
                       <div className="flex-auto">
-                        <a href={item.href} className="block font-semibold text-gray-900">
+                        <NavLink to={item.to} className="block font-semibold text-gray-900">
                           {item.name}
                           <span className="absolute inset-0" />
-                        </a>
+                        </NavLink>
                         <p className="mt-1 text-gray-600">{item.description}</p>
                       </div>
                     </div>
@@ -108,51 +110,46 @@ const Header = () => {
                 </div>
                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                   {callsToAction.map((item) => (
-                    <a
+                    <NavLink
                       key={item.name}
-                      href={item.href}
+                      to={item.to}
                       className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                     >
                       <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                       {item.name}
-                    </a>
+                    </NavLink>
                   ))}
                 </div>
               </PopoverPanel>
             </Transition>
           </Popover>
 
-          <NavLink to="/gallery" className="text-sm font-semibold leading-6 text-gray-900">
+          <NavLink onClick={ navClose_handler} to="/gallery" className="text-sm font-semibold leading-6 text-gray-900">
             Gallery
           </NavLink>
-          <NavLink to="/testimonial" className="text-sm font-semibold leading-6 text-gray-900">
+          <NavLink onClick={ navClose_handler} to="/testimonial" className="text-sm font-semibold leading-6 text-gray-900">
             Testimonial
           </NavLink>
-          <NavLink to="/about" className="text-sm font-semibold leading-6 text-gray-900">
+          <NavLink onClick={ navClose_handler} to="/about" className="text-sm font-semibold leading-6 text-gray-900">
             About
           </NavLink>
-          <NavLink to="/contact" className="text-sm font-semibold leading-6 text-gray-900">
+          <NavLink onClick={ navClose_handler} to="/contact" className="text-sm font-semibold leading-6 text-gray-900">
             Contact
           </NavLink>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <NavLink to="/product/add" className="text-sm font-semibold leading-6 text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
+          <NavLink onClick={ navClose_handler} to={`${userState.auth ? "/profile" : "/auth"}`} className="text-sm font-semibold leading-6 text-gray-900">
+           { userState.auth ? userState.user.name : "Log in" }<span aria-hidden="true">&rarr;</span>
           </NavLink>
         </div>
       </nav>
 
-      <Dialog className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-10 bg-red-500" />
+      <Dialog className="lg:hidden relative z-40" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <div className="fixed inset-0 z-10" />
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <NavLink to="/" className="-m-1.5 p-1.5 flex flex-col">
-              {/* <span className="">Your Company</span> */}
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
+            <NavLink onClick={ navClose_handler} to="/" className="-m-1.5 flex flex-col">
+              <img className="h-14 w-auto" src={logo} alt={logo} />
             </NavLink>
             <button
               type="button"
@@ -163,16 +160,16 @@ const Header = () => {
               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="mt-6 flow-root ">
+          <div className="mt-6 flow-root">
             {/* mobile nav */}
-            <div className="-my-6 divide-y divide-gray-500/10 ">
+            <div className="-my-6 divide-y divide-gray-500/10">
 
               <div className="space-y-2 py-6">
                 <Disclosure as="div" className="-mx-3">
                   {({ open }) => (
                     <>
                       <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Services
+                        Category
                         <ChevronDownIcon
                           className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
                           aria-hidden="true"
@@ -182,8 +179,9 @@ const Header = () => {
                         {[...products, ...callsToAction].map((item) => (
                           <DisclosureButton
                             key={item.name}
-                            as="a"
-                            href={item.href}
+                            as="button"
+                            to={item.to}
+                            onClick={()=> navLinkFun(item.to)}
                             className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                           >
                             {item.name}
@@ -193,34 +191,35 @@ const Header = () => {
                     </>
                   )}
                 </Disclosure>
-                <button
+                <NavLink onClick={ navClose_handler} to="/gallery"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Gallery
-                </button>
-                <button
+                </NavLink>
+                <NavLink onClick={ navClose_handler} to="/testimonial"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Testimonial
-                </button>
-                <button
+                </NavLink>
+                <NavLink onClick={ navClose_handler} to="/about"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   About
-                </button>
-                <button
+                </NavLink>
+                <NavLink onClick={ navClose_handler} to="/contact"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Contact
-                </button>
+                </NavLink>
               </div>
               
-              <div className="py-6">
+              <div className="py-6 capitalize">
                 <NavLink
-                  to="/product/add"
+                onClick={ navClose_handler}
+                to={`${userState.auth ? "/profile" : "/auth"}`}
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Log in
+                  { userState.auth ? userState.user.name : "Log in" }
                 </NavLink>
               </div>
             </div>
@@ -233,4 +232,4 @@ const Header = () => {
     )
 };
 
-export default Header;
+export default memo(Header);

@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Layout from './components/layout/layout';
 import Order from './page/order/order';
 import Booking from './page/booking/booking';
@@ -13,24 +13,28 @@ import Profile from './page/profile/profile';
 import ProductsAccess from './page/profile/productsAccess/productsAccess';
 import GalleryAccess from './page/profile/galleryAccess/galleryAccess';
 import { useDispatch, useSelector } from 'react-redux';
-// import TermAndService from './page/termAndService/termAndService';
-// import Contact from './page/contact/contact';
-// import Gallery from './page/gallery/gallery';
-// import About from './page/about/about';
 import Testimonial from './page/testimonial/testimonial';
-import { userLogged } from './Redux/userSlice/userSlice';
+import { getPublicStaffs, userLogged } from './Redux/userSlice/userSlice';
 import VerifyAccount from './page/verifyAccount/verifyAccount';
 import Auth from './page/authForm/auth';
 import ProtecedRoute from './protectedRoute/protectedRoute';
 import NonProtectedRoute from './protectedRoute/nonProtectedRoute';
 import Header from "./components/header/header"
-// import Footer from "./components/footer/footer"
-// import Products from './page/products/products';
-// import Services from './page/productsAndService/services';
 import { fetchProductsDetails } from './Redux/productSlice/productSlice';
 import { galleriesDetails } from './Redux/gallerySlice/gallerySlice';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './components/layout/errorFallback';
+import ClientAccess from './page/profile/clientAccess/clientAccess';
+import PurchaseTable from './components/table/purchaseTable';
+import ServiceTable from './components/table/serviceTable';
+import ClientForm from './components/Forms/clientForm';
+import PurchaseForm from './components/Forms/purchaseForm';
+import ServiceForm from './components/Forms/serviceForm';
+import StaffAccess from './page/profile/staffAccess/staffAccess';
+import ProfileForm from './components/Forms/profileForm';
+import WriteReview from './page/writeReview/writeReview';
+import ReviewAccess from './page/profile/reviewAccess/reviewAccess';
+import { getReviews } from './Redux/reviewSlice/reviewSlice';
 
 const Footer = lazy(async () => {
   let obj = await import('./components/footer/footer')
@@ -64,29 +68,42 @@ const Services = lazy(async () => {
 function App() {
 
   const dispatch = useDispatch();
-  const userState = useSelector(state => state.user)
 
   const [activeDetails, setActiveDetails] = useState({})
   const { products } = useSelector(state => state.products);
-
+  const { reviews } = useSelector(state => state.review);
+  const { staffs } = useSelector(state => state.user);
 
   useEffect(() => {
     dispatch(userLogged())
-    dispatch(fetchProductsDetails());
-    dispatch(galleriesDetails())
+    let x = fetchDataFun()
+    if (x() === 0) {
+        x()
+    }
 
+}, []);
 
-  }, [])
+function fetchDataFun() {
+    let x = 0;
+    return function () {
+        x++
+        dispatch(fetchProductsDetails());
+        dispatch(galleriesDetails());
+        dispatch(getReviews({string:"", page:1}));
+        dispatch(getPublicStaffs());
+
+        return x
+    }
+}
 
   return (
     <div className="App max-w-screen overflow-x-hidden">
       <BrowserRouter>
         <ScrollToTop />
-        {/* <Suspense fallback={<h6>...</h6>}> */}
         <Header />
-        {/* </Suspense> */}
+    
         <Routes>
-          <Route path='/' element={<Layout products={products} activeDetails={activeDetails} setActiveDetails={setActiveDetails} />} />
+          <Route path='/' element={<Layout products={products} staffs={staffs} reviews={reviews} activeDetails={activeDetails} setActiveDetails={setActiveDetails} />} />
           <Route path='/order' element={<Order />} />
           <Route path='/booking' element={<Booking />} />
 
@@ -112,19 +129,36 @@ function App() {
 
 
           <Route element={<ProtecedRoute />}>
+
             <Route path='/product/add' element={<AddProductForm />} />
-            <Route path='/order/cancel/:id' element={<CancelOrderForm />} />
-            <Route path='/profile' element={<Profile />} />
             <Route path='/gallery/add' element={<AddGalleryForm />} />
+            <Route path='/gallery/update' element={<AddGalleryForm />} />
             <Route path='/gallery/access' element={<GalleryAccess />} />
             <Route path='/products/access' element={<ProductsAccess />} />
+            <Route path='/client/add' element={<ClientForm />} />
+            <Route path='/client/update' element={<ClientForm />} />
+            <Route path='/purchase/update' element={<PurchaseForm />} />
+            <Route path='/service/update' element={<ServiceForm />} />
+            <Route path='/staff/access' element={<StaffAccess />} />
+            <Route path='/clients/access' element={<ClientAccess />} />
+            <Route path='/profile/edit' element={<ProfileForm />} />
+
+            <Route path='/purchase/history/:id' element={<PurchaseTable />} />
+          <Route path='/service/history/:id' element={<ServiceTable />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/reviews/access' element={<ReviewAccess />} />
           </Route>
+
+          
+
 
           <Route element={<NonProtectedRoute />}>
             <Route path='/auth' element={<Auth />} />
           </Route>
 
+          <Route path='/client/review/write' element={<WriteReview />} />
           <Route path='*' element={<PageNotFound />} />
+          <Route path='/order/cancel/:id' element={<CancelOrderForm />} />
 
           <Route path='/term_and_service' element={
             <ErrorBoundary
@@ -165,7 +199,7 @@ function App() {
               </Suspense>
             </ErrorBoundary>
           } />
-          <Route path='/testimonial' element={<Testimonial />} />
+          <Route path='/testimonial' element={<Testimonial reviews={reviews} />} />
           <Route path='/verify-account/:token' element={<VerifyAccount />} />
         </Routes>
 

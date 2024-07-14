@@ -15,6 +15,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { product_postORupdate } from "../../Redux/action/product";
 import { createOrUpdateProduct } from "../../Redux/productSlice/productSlice";
+import useToastNotifications from "../../utils/useToastNotification";
 
 
 
@@ -63,43 +64,7 @@ const AddProductForm = () => {
 
     };
 
-    useEffect(() => {
-        let toastId = null;
-
-        if (loading) {
-            toastId = toast.loading("Please wait...", {
-                position: "bottom-left"
-            });
-
-        }
-
-        if (success && message) {
-            toast.update(toastId, {
-                render: message,
-                position: "bottom-left",
-                type: "success",
-                isLoading: false,
-                autoClose: "4000"
-            })
-        }
-
-        if (error && message) {
-            toast.update(toastId, {
-                render: message,
-                position: "bottom-left",
-                type: "error",
-                isLoading: false,
-                autoClose: "4000"
-            })
-        }
-
-        return () => {
-            if (toastId) {
-                toast.dismiss(toastId);
-            }
-        };
-
-    }, [error, success, message, loading])
+    useToastNotifications({error, success, message, loading})
 
     const create_product_handler = async (formType) => {
 

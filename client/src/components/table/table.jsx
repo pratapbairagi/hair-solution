@@ -1,11 +1,11 @@
 
 import "./table.css"
-import { memo, useEffect, useMemo } from "react";
-import { TrashIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { useNavigate } from "react-router-dom";
+import { memo, useMemo } from "react";
+import { TrashIcon } from '@heroicons/react/20/solid';
 import { useDispatch } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useToastNotifications from "../../utils/useToastNotification";
 
 
 const Table = ({ data = [], accessType="", deleteDataHandler=()=> "", other=null, selectDataToUpdate, sorting, setSorting }) => {
@@ -48,46 +48,7 @@ const Table = ({ data = [], accessType="", deleteDataHandler=()=> "", other=null
     //     })
     // }, [totalButtons, sorting.activePage])
 
-   
-    useEffect(() => {
-        let toastId = null;
-
-        if(other){
-        if (other.loading) {
-            toastId = toast.loading("Please wait...", {
-                position: "bottom-left"
-            });
-
-        }
-
-        if (other.success && other.message) {
-            toast.update(toastId, {
-                render: other.message,
-                position: "bottom-left",
-                type: "success",
-                isLoading: false,
-                autoClose: "4000"
-            })
-        }
-
-        if (other.error && other.message) {
-            toast.update(toastId, {
-                render: other.message,
-                position: "bottom-left",
-                type: "error",
-                isLoading: false,
-                autoClose: "4000"
-            })
-        }
-    }
-
-        return () => {
-            if (toastId) {
-                toast.dismiss(toastId);
-            }
-        };
-
-    }, [other])
+    useToastNotifications({loading : other.loading, success : other.success, error : other.error, message : other.message})
 
     return (
         <div className="w-[100vw] flex flex-col md:justify-start items-start p-1 lg:p-4 min-h-[80vh] bg-white" style={{ maxWidth: "100%", overflow: "auto" }}>

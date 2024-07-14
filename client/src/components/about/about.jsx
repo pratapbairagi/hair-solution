@@ -5,12 +5,12 @@ import right_face from "./images/right_face.jpg"
 const About = () => {
     return (
         <>
-            <div className=" flex flex-col col-span-12 pt-10 py-16 relative overflow-hidden">
+            <div className=" flex flex-col col-span-12 pt-10 py-16 relative overflow-hidden pt-16 " style={{backgroundColor:""}}>
                 <div className="w-[70%] lg:w-[45%] aspect-square bg-orange-500 absolute z-10 bottom-[-8%] lg:bottom-[-50%] right-[-16%] rounded-full"></div>
                 <div className="w-[50%] lg:w-[28%] aspect-square bg-orange-400 absolute z-0 bottom-[-9%] lg:bottom-[-40%] right-[36%] lg:right-[16%] rounded-full"></div>
-                <h5 className=" text-xl font-bold w-full text-center"> About <span className="text-orange-500 text-xl font-bold"> Us </span> </h5>
+                <h5 className=" text-xl lg:text-[30px] font-bold w-full text-center"> About <span className="text-orange-500 text-xl lg:text-[30px] font-bold"> Us </span> </h5>
 
-                <p className="text-gray-600 text-md mt-2.5 min-w-[240px] max-w-[70%] mx-auto">Short detail about our service.</p>
+                <p className="text-gray-600 text-md lg:text-[20px] mt-2.5 lg:mt-3.5 min-w-[240px] max-w-[70%] mx-auto">Short detail about our service.</p>
 
                 <div className="grid grid-cols-12 mt-10 relative">
 

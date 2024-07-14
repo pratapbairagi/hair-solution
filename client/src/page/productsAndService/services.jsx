@@ -1,14 +1,15 @@
-import { useMemo } from "react";
-import { onClick_toggle_handler } from "../../helper/cardToggle_handler";
+import { useMemo, useState } from "react";
+// import { onClick_toggle_handler } from "../../helper/cardToggle_handler";
 import ProductAndServicePageLayout from "./pageLayout"
 import ServiceCard from "../../components/services/services_card/ServiceCard";
 import hero_image1 from "./images/patch_using_smiley_face-removebg-preview.png"
 
 
-const Services = ({products ,activeDetails ,setActiveDetails }) => {
+const Services = ({products  }) => {
     
-    const toggle_handler = ({id, values}) => {
-        onClick_toggle_handler({id, values, setActiveDetails, activeDetails})
+    const [toggleCardSize, setToggleCardSize] = useState(null)
+    const toggle_handler = (id) => {
+        setToggleCardSize( toggleCardSize === id ? null : id)
     }
 
     const product = useMemo(()=>{
@@ -25,12 +26,13 @@ const Services = ({products ,activeDetails ,setActiveDetails }) => {
                  size={v.sizes}
                  color={v.colors}
                  values={v}
-                 onClick_toggle={toggle_handler}
                  id={v.title+i}
-                 activeDetails={activeDetails}
+                 toggle_handler={toggle_handler}
+                 toggleCardSize={toggleCardSize}
+                 setToggleCardSize={setToggleCardSize}
              />
             })
- },[products, activeDetails])
+ },[products, toggleCardSize])
 
 const items = [
     {value : "Outside Hair Patch Cutting", color: "bg-orange-200"}, 

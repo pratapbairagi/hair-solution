@@ -52,13 +52,13 @@ const Gallery = () => {
                 <div className="w-full grid-cols-12 h-max">
 
                     <div className="col-span-12 py-8 lg:py-10 flex flex-col px-4 lg:px-16">
-                        <h6 className="text-[24px] w-max mr-auto font-semibold text-gray-700">Our Photo <span className="text-orange-500 py-2 border-b-2 border-orange-500 pr-12"> Gallery </span> </h6>
+                        <h6 className="text-[24px] w-max mr-auto font-extrabold text-gray-700">Our Photo <span className="text-orange-500 py-2 border-b-2 border-orange-500 pr-12"> Gallery </span> </h6>
 
                         <div className="w-full h-max grid grid-cols-12 mt-10">
                             {imageGalley}
                         </div>
 
-                        <h6 className="text-[24px] w-max mr-auto font-semibold text-gray-700 mt-16">Our Videos <span className="text-orange-500 py-2 border-b-2 border-orange-500 pr-12"> Gallery </span> </h6>
+                        <h6 className="text-[24px] w-max mr-auto font-extrabold text-gray-700 mt-16">Our Videos <span className="text-orange-500 py-2 border-b-2 border-orange-500 pr-12"> Gallery </span> </h6>
 
                         <div className="col-span-12 flex flex-wrap py-4 gap-y-8 lg:gap-y-10 px-2 shadow-sm mt-7 h-max">
                             <iframe className="min-w-[50%] lg:min-w-[100%] min-h-[30vh] lg:min-h-[70vh]"

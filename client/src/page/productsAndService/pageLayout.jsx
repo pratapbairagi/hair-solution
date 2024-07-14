@@ -38,7 +38,6 @@ const ProductAndServicePageLayout = ({subheading="", heading="", heroImg="", mai
 
          <div className="col-span-12 grid grid-cols-12 mt-8 px-6 lg:px-4">
         {productOrService}
-
          </div>
 
         </div>

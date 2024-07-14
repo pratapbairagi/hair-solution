@@ -19,8 +19,6 @@ const Footer = () => {
 
                     </div>
 
-
-
                     <div className="col-span-12 md:col-span-6 lg:col-span-3">
                         <h3 className="text-gray-300 text-lg text-start ">Direct Links</h3>
                         <ul className="flex flex-col gap-y-1.5 mt-3.5 text-start">
@@ -98,7 +96,7 @@ const Footer = () => {
                         <h3 className="text-lg text-gray-300">Newsletter</h3>
                         <div className="flex flex-col items-center gap-y-1 mt-3.5">
                             <textarea className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px]" placeholder="Type your requirement..." name="requirement" id="" rows={5}></textarea>
-                            <input autoComplete className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px]" type="email" name="email" id="email" placeholder="Your email id here" />
+                            <input className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px]" type="email" name="email" id="email" placeholder="Your email id here" />
                             <button className="rounded-sm text-md px-3 py-2 w-[98%] max-w-[500px] bg-yellow-600 text-gray-100 font-semibold">SEND</button>
                         </div>
 

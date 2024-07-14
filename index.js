@@ -10,6 +10,7 @@ const path = require("path");
 const galleryRoute = require("./routes/gallery");
 const cookieParser = require("cookie-parser");
 const clientRoute = require("./routes/client");
+const reviewRoute = require("./routes/review");
 
 const app = express();
 const PORT =  8000;
@@ -45,6 +46,7 @@ app.use("/api/app", productsRoute);
 app.use("/api/app", userRouter);
 app.use("/api/app", galleryRoute);
 app.use("/api/app", clientRoute);
+app.use("/api/app", reviewRoute);
 
 app.use(express.static(path.join(__dirname, './client/build/')));
 

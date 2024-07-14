@@ -101,6 +101,12 @@ const {
     clearError
 } = gallerySlice.actions;
 
+const config = {
+    headers : {
+        "Content-Type" : "application/json"
+    }
+};
+
 export const fetchGalleryDetails = () => async (dispatch) => {
     try {
         const abortController = new AbortController()
@@ -141,12 +147,6 @@ export const galleriesDetails = () => async (dispatch) => {
 
         const url = `${rootUrl}/api/app/galleriesDetails`;
 
-        const config = {
-            headers : {
-                "Content-Type" : "application/json"
-            }
-        };
-
         const response = await axios.get(url, config);
 
         dispatch(galleriesDetailsSuccess(response?.data));
@@ -167,12 +167,6 @@ export const galleriesDetails = () => async (dispatch) => {
 export const galleryCreateOrUpdate = ({data={}, id="", type="", state={}}) => async (dispatch) => {
     try {
         dispatch(galleryCreateOrUpdateRequest());
-
-        const config = {
-            headers : {
-                "Content-Type" : "application/json"
-            }
-        };
         let url;
         if(type === "add"){
             url = `${rootUrl}/api/app/galleryCreate`;
@@ -190,7 +184,6 @@ export const galleryCreateOrUpdate = ({data={}, id="", type="", state={}}) => as
           }, 5000);
 
     } catch (error) {
-        console.log("error create gallery ", error)
 
         dispatch(galleryCreateOrUpdateError(error.response?.data));
 
@@ -205,11 +198,6 @@ export const galleryDelete = ({id=""}) => async (dispatch) => {
         dispatch(galleryDeleteRequest());
 
         const url = `${rootUrl}/api/app/galleryDelete/${id}`;
-        const config = {
-            headers : {
-                "Content-Type" : "application/json"
-            }
-        }
 
         const response = await axios.delete(url, config);
 

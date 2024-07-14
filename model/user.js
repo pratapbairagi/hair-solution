@@ -6,7 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 const userSchema = mongoose.Schema({
     name: {
         type: String,
-        require: [true, "Name field is required !"]
+        require: [true, "Name field is required !"],
+        index : true
     },
     email: {
         type: String,
@@ -14,7 +15,8 @@ const userSchema = mongoose.Schema({
     },
     number: {
         type: Number,
-        require: [true, "Number field is required !"]
+        require: [true, "Number field is required !"],
+        index : true
     },
     gender: {
         type: String,
@@ -25,7 +27,7 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: String,
-        default: "employee"
+        default: "user"
     },
     specialist: {
         type: String
@@ -43,7 +45,7 @@ const userSchema = mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
 });
 

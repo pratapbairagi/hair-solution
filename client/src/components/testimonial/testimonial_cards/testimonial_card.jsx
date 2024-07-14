@@ -1,7 +1,15 @@
+import { StarIcon } from "@heroicons/react/24/outline";
+import { useMemo } from "react";
 
+const Testimonial_card = ({comment="", client="", service_type="", rating=0}) => {
 
-
-const Testimonial_card = ({comment="", client="", service_type=""}) => {
+    const ratingStar = useMemo(() => {
+        return Array.from({ length: rating }, (v, i) => {
+            return <li key={i} className="w-30px relative">
+                <StarIcon className={`star stroke-gray-200 cursor-pointer h-[30px] ${rating >= i + 1 ? "fill-yellow-400 stroke-transparent" : "fill-transparent"} `} />
+            </li>
+        })
+    }, [rating])
     return (
         <>
             <section className=" min-w-[100%] shadow-sm  hover:shadow-md">
@@ -22,12 +30,17 @@ const Testimonial_card = ({comment="", client="", service_type=""}) => {
                             </p>
                         </blockquote>
                         <figcaption className="flex items-center justify-center mt-6 space-x-3">
-                            <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
+                            {/* <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" /> */}
                             <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
-                                <div className="pr-3 font-medium text-gray-900">{client}</div>
-                                <div className="pl-3 text-sm font-semibold text-orange-400">{service_type}</div>
+                                <div className="pr-3 font-medium text-gray-900 capitalize">{client}</div>
+                                <div className="pl-3 text-sm font-semibold text-orange-400 capitalize">{service_type}</div>
                             </div>
                         </figcaption>
+                        <ul className="w-full flex flex-row justify-center items-center mt-5">
+                            <span className="w-[40px] h-[3px] bg-orange-500 mr-3"></span>
+                        {ratingStar}
+                        <span className="w-[40px] h-[3px] bg-orange-500 ml-3"></span>
+                        </ul>
                     </figure>
                 </div>
             </section>

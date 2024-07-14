@@ -4,6 +4,11 @@ import axios from 'axios';
 
 const rootUrl = 'https://hair-solution.vercel.app';
 // const rootUrl = 'http://localhost:8000';
+const config = {
+  headers : {
+    "Content-Type" : "application/json"
+  }
+}
 
 export const productSlice = createSlice({
   name: 'products',
@@ -153,13 +158,6 @@ export const createOrUpdateProduct = ({ data, type, id }) => async (dispatch) =>
   try {
     dispatch(productCreateOrUpdateRequest());
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-        // "Access-Control-Allow-Origin" : rootUrl
-      }
-    }
-
     const url =
       type === 'update'
         ? `${rootUrl}/api/app/productUpdate/${id}`
@@ -185,17 +183,10 @@ export const createOrUpdateProduct = ({ data, type, id }) => async (dispatch) =>
 };
 
 export const deleteProduct = ({ id = "" }) => async (dispatch) => {
-  alert(id)
   try {
     dispatch(productDeleteRequest());
 
     const url = `${rootUrl}/api/app/productDelete/${id}`;
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
 
     const response = await axios.delete(url)
 
@@ -207,7 +198,6 @@ export const deleteProduct = ({ id = "" }) => async (dispatch) => {
     }, 5000);
 
   } catch (error) {
-    console.log("catch delete error =>> ", error);
     dispatch(productDeleteFailed(error.response?.data.message));
 
     // Clear error message after 5 seconds

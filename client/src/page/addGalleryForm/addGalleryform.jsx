@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { galleryCreateOrUpdate } from "../../Redux/gallerySlice/gallerySlice";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useToastNotifications from "../../utils/useToastNotification";
 
 
 
@@ -66,44 +67,7 @@ const AddGalleryForm = () => {
             dispatch(galleryCreateOrUpdate({ data: galleryFormData, id: location.state?._id, type: formType, state: location.state }))
     }
 
-
-    useEffect(() => {
-        let toastId = null;
-
-        if (loading) {
-            toastId = toast.loading("Please wait...", {
-                position: "bottom-left"
-            });
-
-        }
-
-        if (success && message) {
-            toast.update(toastId, {
-                render: message,
-                position: "bottom-left",
-                type: "success",
-                isLoading: false,
-                autoClose: "4000"
-            })
-        }
-
-        if (error && message) {
-            toast.update(toastId, {
-                render: message,
-                position: "bottom-left",
-                type: "error",
-                isLoading: false,
-                autoClose: "4000"
-            })
-        }
-
-        return () => {
-            if (toastId) {
-                toast.dismiss(toastId);
-            }
-        };
-
-    }, [error, success, message, loading])
+    useToastNotifications({error, success, message, loading})
 
     // update default values when click on update button
     useEffect(() => {

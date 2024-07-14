@@ -160,8 +160,6 @@ exports.order = async (req, res, next) => {
             folder : "order_pdfs"
         })
 
-        console.log("order details url =>> ", result.secure_url)
-
         res.status(201).json({
             message: "Order created successfully !",
             order: {
@@ -179,12 +177,10 @@ exports.order = async (req, res, next) => {
 
 exports.orderCancel = async (req, res, next) => {
     try {
-        console.log("params id ", req.params.id)
 
         let id = req.params.id;
         id = id.replace(/pratap/g, "/");
 
-        console.log("id", id)
         await cloudinary.uploader.destroy(id)
 
         res.status(200).json({

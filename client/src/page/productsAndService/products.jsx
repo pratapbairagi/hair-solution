@@ -5,13 +5,13 @@ import ServiceCard from "../../components/services/services_card/ServiceCard";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsDetails } from "../../Redux/productSlice/productSlice";
-import { onClick_toggle_handler } from "../../helper/cardToggle_handler";
 import ProductAndServicePageLayout from "./pageLayout";
 
-const Products = ({products ,activeDetails ,setActiveDetails }) => {
-
-    const toggle_handler = ({id, values}) => {
-        onClick_toggle_handler({id, values, setActiveDetails, activeDetails})
+const Products = ({products }) => {
+    
+    const [toggleCardSize, setToggleCardSize] = useState(null)
+    const toggle_handler = (id) => {
+        setToggleCardSize( toggleCardSize === id ? null : id)
     }
 
     const product = useMemo(()=>{
@@ -28,12 +28,13 @@ const Products = ({products ,activeDetails ,setActiveDetails }) => {
                  size={v.sizes}
                  color={v.colors}
                  values={v}
-                 onClick_toggle={toggle_handler}
+                 toggle_handler={toggle_handler}
                  id={v.title+i}
-                 activeDetails={activeDetails}
+                 toggleCardSize={toggleCardSize}
+                 setToggleCardSize={setToggleCardSize}
              />
             })
- },[products, activeDetails])
+ },[products, toggleCardSize])
 
 const items = [
     {value : "Wig", color: "bg-orange-200"}, 

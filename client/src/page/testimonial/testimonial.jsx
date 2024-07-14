@@ -1,45 +1,52 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./testimonial.css"
-import wig from "./images/wig_using_smiley_face-removebg-preview.png"
-import { Rating } from 'react-simple-star-rating'
+import { StarIcon } from "@heroicons/react/24/outline";
+import moment from "moment-timezone"
 
-const Testimonial = () => {
-    const slides = [
-        {
-            title: "one",
-            description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium, accusamus. Illo corporis atque quisquam ut. Praesentium iste perspiciatis minus quod!",
-            image: wig
-        },
-        {
-            title: "two",
-            description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium, accusamus. Illo corporis atque quisquam ut. Praesentium iste perspiciatis minus quod!",
-            image: wig
-        },
-        {
-            title: "three",
-            description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium, accusamus. Illo corporis atque quisquam ut. Praesentium iste perspiciatis minus quod!",
-            image: wig
-        },
-        {
-            title: "four",
-            description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium, accusamus. Illo corporis atque quisquam ut. Praesentium iste perspiciatis minus quod!",
-            image: wig
-        }
-    ]
+const Testimonial = ({ reviews }) => {
+
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const nextSlide = () => {
-        setCurrentSlide((currentSlide + 1) % slides.length);
+        setCurrentSlide((currentSlide + 1) % reviews.length);
     };
 
     const prevSlide = () => {
-        setCurrentSlide((currentSlide - 1 + slides.length) % slides.length);
+        setCurrentSlide((currentSlide - 1 + reviews.length) % reviews.length);
     };
 
-    const [rating, setRating] = useState(0)
-    const handleRating = (rate) => {
-        setRating(rate)
-      }
+    const testimonialCard = useMemo(() => {
+        return reviews.map((slide, index) => {
+            return <div
+                key={index}
+                className={`w-full px-3 lg:px-10 min-h-[50vh] flex-col justify-center items-center h-max ${index === currentSlide ? 'flex' : 'hidden'
+                    }`}
+            >
+                <div className="h-[30vh] mr-auto px-4 flex items-center flex-col w-full">
+                    <b className="text-[20px] text-gray-400 mt-1 capitalize text-start mr-auto border-b-2 border-orange-500 pr-12">{slide.entityName}</b>
+                    <img src={slide.entityImage} className="h-[50%] mt-4 mr-auto border" alt={"product or service image"} />
+                    <b className="text-[15px] text-gray-600 w-full flex justify-between items-end mt-2 capitalize">
+                        <span className="text-start">{slide.clientName}</span>
+                        <span className="text-[12px] text-orange-300 text-end" >{moment(slide.createdAt).tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss")}</span>
+                    </b>
+                </div>
+                <div className=" p-4 text-gray-500 mt-6 border-t w-full">
+                    {slide.reviewText?.length > 0 ? <p className="text-sm min-h-[24vh] text-justify flex items-center flex-wrap justify-center">{slide.reviewText}</p>
+                        :
+                        <p className="text-sm min-h-[24vh] flex justify-center items-center text-[26px]">No Comment</p>
+                    }
+                    <ul className="text-xl flex gap-x-2 mt-4 font-bold w-full flex flex-row justify-center items-center">
+                        {Array.from({ length: slide.rating }, (v, i) => {
+                            return <li key={i} className="w-[30px] relative">
+                                <StarIcon className={`star stroke-gray-200 cursor-pointer h-[25px] ${slide.rating >= i + 1 ? "fill-yellow-400 stroke-transparent" : "fill-transparent"} `} />
+                            </li>
+                        })}
+                    </ul>
+                </div>
+            </div>
+        })
+    }, [reviews, currentSlide])
+
     return (
         <>
             <div className="w-full h-max min-h-[100vh] flex flex-col">
@@ -55,7 +62,7 @@ const Testimonial = () => {
                         <li>
                             <span className="p-1 shadow-md rounded-full aspect-square bg-gray-100 text-[36px] lg:text-[42px]">&#128542;</span>
                         </li>
-                        <li className="relative p-1 pb-[7px] shadow-md rounded-full">
+                        <li className="relative p-1 pb-[2px] shadow-md rounded-full">
                             <span className="p-1 bg-green-500  rounded-full aspect-square bg-gray-100 text-[48px] lg:text-[54px]">&#128529;</span>
                             <span className="absolute text-xs font-semibold text-gray-100 px-2 py-1 rounded-full -bottom-[20px] bg-gray-800 w-[76px]" style={{ left: "calc( ( 100% - 76px ) / 2)" }}>Medium</span>
                         </li>
@@ -86,25 +93,8 @@ const Testimonial = () => {
                 <div className="w-full mx-auto lg:max-w-[800px] h-max min-h-[50vh] py-10">
 
                     <div className="relative overflow-hidden w-full max-w-screen-lg mx-auto">
-                        <div className="flex transition-transform ease-in-out duration-500 transform max-w-[600px] mx-auto">
-                            {slides.map((slide, index) => (
-                                <div
-                                    key={index}
-                                    className={`w-full px-3 lg:px-10 min-h-[40vh] flex-col justify-center items-center h-max ${index === currentSlide ? 'flex' : 'hidden'
-                                        }`}
-                                >   
-                                <div className="h-[10vh] mx-auto flex items-center flex-col">
-                                    <img src={slide.image} alt={slide.title} className="h-[100%] " />
-                                    <b className="text-[16px] text-gray-600 mt-1">Hair Wig</b>
-                                </div>
-                                    <div className=" p-4 text-gray-500 mt-6">
-                                        <p className="text-sm">{slide.description}</p>
-                                        <ul className="text-xl flex gap-x-2 font-bold">
-                                        <Rating onClick={handleRating} className="flex" initialValue={rating} />
-                                        </ul>
-                                    </div>
-                                </div>
-                            ))}
+                        <div className="flex transition-transform ease-in-out duration-500 transform max-w-[600px] mx-auto min-h-[60vh]">
+                            {testimonialCard}
                         </div>
                         <button
                             className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white bg-opacity-50 text-gray-500 text-2xl px-4 py-2 rounded-l-md z-10"

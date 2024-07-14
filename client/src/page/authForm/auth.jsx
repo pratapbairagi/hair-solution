@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import salonWithWigs from "./images/unblured.jpeg";
 import logo from "./images/pixelcut-export.png"
 import { NavLink } from "react-router-dom";
@@ -8,13 +8,14 @@ import SignUp from "./signUp";
 import SignIn from "./signIn";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useToastNotifications from "../../utils/useToastNotification";
 
 
 
 const Auth = () => {
   const dispatch = useDispatch()
   const [showSignUp, setShowSignUp] = useState(true);
-  const {success, error, message, loading} = useSelector(state=> state.user);
+  const { success, error, message, loading } = useSelector(state => state.user);
 
   const [createForm, setCreateForm] = useState({
     name: "",
@@ -28,45 +29,7 @@ const Auth = () => {
     // image: ""
   })
 
-  useEffect(() => {
-    let toastId = null;
-
-    if (loading) {
-        toastId = toast.loading("Please wait...", {
-            position: "bottom-left"
-        });
-
-    }
-
-    if (success && message) {
-        toast.update(toastId, {
-            render: message,
-            position: "bottom-left",
-            type: "success",
-            isLoading: false,
-            autoClose: "4000"
-        })
-    }
-
-    if (error && message) {
-        toast.update(toastId, {
-            render: message,
-            position: "bottom-left",
-            type: "error",
-            isLoading: false,
-            autoClose: "4000"
-        })
-    }
-
-    return () => {
-        if (toastId) {
-            toast.dismiss(toastId);
-        }
-    };
-
-}, [error, success, message, loading])
-
-
+  useToastNotifications({ success, error, message, loading })
 
   const fieldsetClassName = "col-span-12 lg:col-span-6 md:px-2 flex flex-col  mt-2 md:mt-4 gap-y-1 gap-x-4";
   const labelClassName = "text-xs text-gray-500 font-semibold block text-start";
@@ -82,19 +45,40 @@ const Auth = () => {
 
   };
 
+  const errFun = (msg) => {
+    toast.error(msg, {
+      position: "bottom-left",
+      isLoading: false,
+      autoClose: 5000
+    })
+  }
+
   const submit_register_handler = (e) => {
-    e.preventDefault()
-    dispatch(userRegister({ data: createForm }))
+    e.preventDefault("All fields are required to fill !")
+    if (!createForm.name || !createForm.number || !createForm.confirmPassword || !createForm.gender || !createForm.specialist || !createForm.password || !createForm.confirmPassword) {
+      errFun("All fields are required to fill !")
+    } else {
+      if (createForm.number.length === 10) {
+        if (!createForm.password.length > 7 && createForm.password.length < 21) {
+          dispatch(userRegister({ data: createForm }))
+        } else {
+          errFun("Password length must be 8 to 20 characters")
+        }
+      }
+      else {
+        errFun("Invalid number and it must be 10 characters")
+      }
+    }
   }
 
   const submit_login_handler = (e) => {
     e.preventDefault()
-    dispatch(userLogin({ data : { email: createForm.email, password: createForm.password } }))
+    dispatch(userLogin({ data: { email: createForm.email, password: createForm.password } }))
   }
 
   return (
     <section className="bg-white">
-           <ToastContainer/>
+      <ToastContainer />
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6 mt-16 lg:mt-12">
 

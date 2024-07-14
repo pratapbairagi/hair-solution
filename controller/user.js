@@ -34,6 +34,7 @@ exports.userRegister = async (req, res, next) => {
             experience,
             specialist,
             password,
+            createdAt: new Date(),
             verificationToken: {
                 token,
                 expiresAt
@@ -42,7 +43,7 @@ exports.userRegister = async (req, res, next) => {
 
         const user = await newUser.save();
 
-        await sendVerificationEmail({email, token, expiresAt});
+        await sendVerificationEmail({type:"register",email, token, expiresAt});
 
         res.status(201).json({
             success: true,
@@ -50,7 +51,6 @@ exports.userRegister = async (req, res, next) => {
         })
 
     } catch (error) {
-        console.log("errror ", error)
         return next(new ErrorHandler(error))
     }
 };
@@ -113,20 +113,20 @@ exports.userLogin = async (req, res, next) => {
         const refresCookieOption = {
             httpOnly: true,
             maxAge: ( 24 * 60 * 60 * 1000),
-            secure : true,
-            path : "/"
+            // secure : true,
+            // path : "/"
             // sameSite : "none"
         }
 
         const accessCookieOption = {
             httpOnly: true,
             maxAge: ( 15 * 60 * 1000),
-            secure : true,
-            path : "/"
+            // secure : true,
+            // path : "/"
             // sameSite : "none"
         }
 
-        const user = await User.findById(isEmailExist._id).select("-password -verificationToken -isVerified")
+        const user = await User.findById(isEmailExist._id).select("-password -verificationToken")
         
         res.status(200).cookie("accessToken", accessToken, accessCookieOption)
         .cookie("refreshToken", refreshToken, refresCookieOption).json({
@@ -143,22 +143,24 @@ exports.userLogin = async (req, res, next) => {
 
 exports.userUpdate = async (req, res, next) => {
     try {
+        console.log("update 0")
         const { id } = req.params;
-        const { name, number, email, address, gender } = req.body;
-
+        const { name, number, email, gender, experience, specialist } = req.body;
+        console.log("update 1", experience)
+        
         const isUserExist = await User.findById(id);
 
         if (!isUserExist) {
             return next(new ErrorHandler("User does not exist !", 404))
         }
 
-        await User.findByIdAndUpdate(req.body);
+        await User.findByIdAndUpdate(id, {name, number, email, gender, specialist, experience});
 
-        const updatedUser = await findById(id);
+        const updatedUser = await User.findById(id).select("-password -verificationToken")
 
         res.status(200).json({
             success: true,
-            message: "User updated successfully !",
+            message: "Profile updated successfully !",
             user: updatedUser
         })
 
@@ -167,8 +169,52 @@ exports.userUpdate = async (req, res, next) => {
     }
 }
 
+exports.staffUpdate = async (req, res, next) => {
+    try {
+        console.log("role")
+
+        const { id } = req.params;
+        const { role, isVerified } = req.body;
+
+        console.log("verified frontend", isVerified)
+        
+        const isUserExist = await User.findById(id);
+
+        if (!isUserExist) {
+            return next(new ErrorHandler("User does not exist !", 404))
+        }
+
+        // console.log("user", isUserExist)
+
+        let verified;
+
+        if( isVerified || isVerified === "Yes" ){
+            verified = true
+        }
+        if( !isVerified || isVerified === "no"){
+            verified = false
+        }
+
+        isUserExist.role = role;
+        isUserExist.isVerified =  verified
+
+        await isUserExist.save()
+
+        const users = await User.find().select("-password -verificationToken")
+
+        res.status(200).json({
+            success: true,
+            message: "Staff updated successfully !",
+            users: users
+        })
+
+    } catch (error) {
+        return next(new ErrorHandler(error))
+    }
+}
+
+
 exports.userLogged = async (req, res, next) => {
-    console.log("logged")
 
     try {
         let user = req.user;
@@ -177,7 +223,7 @@ exports.userLogged = async (req, res, next) => {
             return next(new ErrorHandler("Need to login !", 400))
         }
 
-        user = await User.findById(user._id).select("-password -verificationToken -isVerified")
+        user = await User.findById(user._id).select("-password -verificationToken")
 
         res.status(200).json({
             success: true,
@@ -215,6 +261,78 @@ exports.userLogout = async (req, res, next) => {
             success: true,
             message: ""
         });
+
+    } catch (error) {
+        return next(new ErrorHandler(error))
+    }
+}
+
+exports.getUsers = async (req, res, next) => {
+    try {
+        const {data} = req.params;
+
+        let users;
+        
+        if(data === "specialist"){
+            users = await User.find().select("-verificationToken -password -role -createdAt")
+        }
+        else{
+            users = await User.find().select("-verificationToken -password")
+        }
+        const totalStaff = await User.countDocuments();
+
+        res.status(200).json({
+            success : true,
+            message : "",
+            users,
+            totalStaff
+        });
+
+    } catch (error) {
+        return next(new ErrorHandler(error))
+    }
+
+}
+
+exports.deleteStaff = async (req, res, next) => {
+    try {
+        const {id} = req.params;
+
+        const isStaffExist = await User.findById(id);
+
+        if(!isStaffExist){
+            return next( new ErrorHandler("User does not exist or deleted !", 404))
+        }
+
+        await User.findByIdAndDelete(id)
+        
+        const totalStaff = await User.countDocuments();
+        const users = await User.find().select("-verificationToken -password -role -createdAt")
+
+
+        res.status(200).json({
+            success : true,
+            message : "User or Staff removed successfully !",
+            users,
+            totalStaff
+        });
+
+    } catch (error) {
+        return next(new ErrorHandler(error))
+    }
+
+}
+
+exports.publicStaffs = async (req, res, next) => {
+    try {
+
+        const staffs = await User.find().select("-password -verificationToken -createdAt -number -email -experience -role");
+
+        res.status(200).json({
+            success : true,
+            message : "",
+            staffs
+        })
 
     } catch (error) {
         return next(new ErrorHandler(error))

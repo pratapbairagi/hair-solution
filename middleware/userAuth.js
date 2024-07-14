@@ -4,7 +4,6 @@ const jsonwebtoken = require("jsonwebtoken");
 
 const userAuth = async (req, res, next) => {
   try {
-
     let { refreshToken, accessToken } = req.cookies;
 
     if (!refreshToken) {
@@ -13,7 +12,7 @@ const userAuth = async (req, res, next) => {
 
     let { id } = jsonwebtoken.verify(refreshToken, "iyfoahf owaehf/q3er048t0458 fdueyef3265232\yrascwctb8wt23dho2daz.d03i2pfhcbqww9ZZ-20EQ3['LWE,F\[]")
 
-    if( !id ){
+    if (!id) {
       return next(new ErrorHandler("Login required, session expired !"));
     }
 
@@ -23,21 +22,20 @@ const userAuth = async (req, res, next) => {
       return next(new ErrorHandler("Login required !"));
     }
 
-
     if (!accessToken) {
       accessToken = await user.generateAccessToken();
       const accessCookieOption = {
         httpOnly: true,
-        maxAge: ( 15 * 60 * 1000),
-        secure : true,
-        path : "/"
+        maxAge: (15 * 60 * 1000),
+        // secure: true,
+        // path: "/"
         // sameSite : "none"
-    };
+      };
 
-   await res.cookie("accessToken", accessToken, accessCookieOption)
+      await res.cookie("accessToken", accessToken, accessCookieOption)
     }
 
-    req.user =  user;
+    req.user = user;
 
     next()
 

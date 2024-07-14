@@ -7,9 +7,9 @@ const Contact = () => {
             <div className=" flex flex-col col-span-12 pt-10 py-16 relative overflow-hidden">
                 {/* <div className="w-[70%] lg:w-[45%] aspect-square bg-orange-500 absolute z-10 bottom-[-8%] lg:bottom-[-50%] right-[-16%] rounded-full"></div>
                 <div className="w-[50%] lg:w-[28%] aspect-square bg-orange-400 absolute z-0 bottom-[-9%] lg:bottom-[-40%] right-[36%] lg:right-[16%] rounded-full"></div> */}
-                <h5 className=" text-xl font-bold w-full text-center"> Contact <span className="text-orange-500 text-xl font-bold"> Us </span> </h5>
+                <h5 className=" text-xl lg:text-[30px] font-bold w-full text-center"> Contact <span className="text-orange-500 text-xl lg:text-[30px] font-bold"> Us </span> </h5>
 
-                <p className="text-gray-600 text-md mt-2.5 min-w-[240px] max-w-[70%] mx-auto">Here our contact details in short. for more visit contact page.</p>
+                <p className="text-gray-600 text-md lg:text-[20px] mt-2.5 lg:mt-3.5 min-w-[240px] max-w-[70%] mx-auto">Here our contact details in short. for more visit contact page.</p>
                 <div className="grid grid-cols-12 lg:mt-8 p-2">
 
                     <div className="col-span-12 lg:col-span-6 flex flex-col min-h-[50vh] justify-center items-center" style={{backgroundImage:`url(${contact_salon})`, backgroundPosition:"center", backgroundRepeat:"no-repeat", backgroundSize:"contain"}}>
@@ -20,7 +20,7 @@ const Contact = () => {
                     <div className="col-span-12 lg:col-span-6 flex flex-col p-6">
 
                         <div className="w-full flex flex-wrap gap-x-4 gap-y-3">
-                            <h6 className="w-[70%] my-3 font-bold text-gray-400 text-start py-1 border-b-2 border-orange-400">Some Contacts</h6>
+                            <h6 className="w-[70%] my-3 font-bold text-gray-400 text-start py-1 border-b-2 border-orange-400 lg:text-[20px]">Some Contacts</h6>
 
                             <div className="w-max min-w-[220px] flex flex-wrap justify-start items-center gap-x-4 font-semibold text-gray-400 p-5 border rounded-md">
                                 <svg viewBox="0 0 24 24" className="w-8 fill-gray-500"><path d="M21 3C21.5523 3 22 3.44772 22 4V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V19H20V7.3L12 14.5L2 5.5V4C2 3.44772 2.44772 3 3 3H21ZM8 15V17H0V15H8ZM5 10V12H0V10H5ZM19.5659 5H4.43414L12 11.8093L19.5659 5Z"></path></svg>

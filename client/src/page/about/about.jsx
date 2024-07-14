@@ -21,7 +21,8 @@ const About = () => {
         <>
             <div className="w-full h-max min-h-[100vh] flex flex-col pt-[12vh]">
 
-                <div className="w-full min-h-[40vh] lg:min-h-[40vh] lg:min-h-[40vh] flex flex-col justify-center items-start relative px-8 lg:px-16">
+                {/* <div className="w-full min-h-[40vh] lg:min-h-[40vh] lg:min-h-[40vh] flex flex-col justify-center items-start relative px-8 lg:px-16"> */}
+                <div className="w-full h-max py-10 flex flex-col justify-center items-start relative px-8 lg:px-16">
                     {/* <img src={heroImage} className="absolute left-0 top-0 right-0 h-full w-full object-cover" alt={heroImage} /> */}
                     <h6 className="text-[26px] lg:text-[24px] font-bold relative z-10 text-gray-800 text-start px-1">About Us  </h6>
                     <h6 className="text-[26px] lg:text-[36px] font-bold relative z-10 text-orange-500 text-start -mt-2 border-b-2 border-orange-500 pr-12" > And Our Service </h6>
@@ -42,14 +43,14 @@ const About = () => {
                         </p>
                     </div>
 
-                    <div className="col-span-12 order-4 lg:order-3 flex flex-col justify-center h-full min-h-[30vh] px-8 py-8 bg-gray-100">
+                    <div className="col-span-12 order-4 lg:order-3 flex flex-col justify-center h-max min-h-[30vh] px-8 py-8 bg-gray-100">
                         <blockquote className="text-[14px] hidden lg:block lg:text-[28px] font-bold text-gray-500 text-start border-b-2 border-orange-500 w-max mx-auto pr-8 pb-1 lg:pb-2 h-max"> About Our <span className="text-orange-500">Services</span>  </blockquote>
                         <ul className=" text-[10px] lg:text-[20px] text-justify mx-auto font-normal text-gray-400 mt-3 h-max">
                             {aboutService}
                         </ul>
                     </div>
 
-                    <div className="col-span-12 order-3  lg:order-4 h-full lg:min-h-[35vh] flex flex-col items-center justify-center">
+                    <div className="col-span-12 order-3  lg:order-4 h-max lg:min-h-[35vh] flex flex-col items-center justify-center">
                         <blockquote className="text-[14px] lg:hidden lg:text-[28px] font-bold text-gray-500 text-start border-b-2 border-orange-500 w-max mx-auto pr-8 pb-1 lg:pb-2 h-max"> About Our <span className="text-orange-500">Services</span>  </blockquote>
 
                         <img src={hairMaintainance} className="h-full w-full object-cover" alt="" />

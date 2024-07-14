@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer")
 
-const sendVerificationEmail = async ({ email, token, expiresAt }) => {
+const sendVerificationEmail = async ({type="", email="", client={} , token="", expiresAt="" }) => {
     try {
         let transporter = nodemailer.createTransport({
             service: "Gmail",
@@ -12,29 +12,47 @@ const sendVerificationEmail = async ({ email, token, expiresAt }) => {
                 pass: "rzcdukxvhenuzqub"
             }
         });
-        // jvcn oynf onrj jqxp
+       
+        let to;
+        let link;
 
-        // const mailOption ={
-        //     from:"pratap.bairagi.test@gmail.com",
-        //     to:options.email,
-        //     subject:options.subject,
-        //     text:options.message
-        // }
+        if(type === "review"){
+            to = email
 
-        const verificationLink = `https://hair-solution.vercel.app/verify-account/${token}`;
+        }
+        if(type === "register"){
+            to = "saunihair@gmail.com"
+        }
+
+        if( type === "review" ){
+            link = `https://hair-solution.vercel.app/client/review/write?clientName=${client.clientName}&clientId=${client.clientId}&entityType=${client.entityType}&entityId=${client.entityId}&entityName=${client.entityName}&entityImage=${client.entityImage}&entityTakenDate=${client.entityTakenDate}&entityAmount=${client.entityAmount}&entityOther=${client.entityOther}`;
+        }
+        if( type === "register" ){
+            link = `https://hair-solution.vercel.app/verify-account/${token}`;
+        }
 
         let info = await transporter.sendMail({
             from: 'saunihair@gmail.com', // sender address
-            to: "saunihair@gmail.com", // list of receivers
-            subject: 'Verify Your Account', // Subject line
-            html: `
+            to: to, // list of receivers
+            subject: type === "review" ? "SA Uni Hair Review" : 'Verify Your Account' , // Subject line
+            html: type === "review" ?  `
+                <div style='width: "100vw"; height: "max-content"; min-height:"100vh"; display:"flex"; flex-direction:"column"; '>
+                <b style=" margin-top: '18px'; ">Hello ${client.clientName},</b>
+                 <p style="">Thank you for choosing us. We would like to have your thoughts about us and our product/service, Please share your feedback with us, link given below. :</p>
+                <a href="${link}" > ${link}</a>
+                <p style='margin-top: "10px";'>If you did not request this, please ignore this email.</p>
+                <p>Regards, <br/> SA UNI HAIR Team</p>
+                </div>
+            `
+            :
+            `
                 <div style='width: "100vw"; height: "max-content"; min-height:"100vh"; display:"flex"; flex-direction:"column"; '>
                 <b style=" margin-top: '18px'; ">Hello there,</b>
-                <p style="">Thank you for registering with us. Please click on the link below to verify your account:</p>
-                <a href="${verificationLink}">${verificationLink}</a>
-                <p>This link will expire at ${expiresAt.toLocaleString()}.</p>
+                 <p style="">Thank you for registering with us. Please click on the link below to verify your account:</p>
+                <a href="${link}" > ${link}</a>
+                <p>This link will expire at ${expiresAt.toLocaleString() }.</p>
                 <p>If you did not request this, please ignore this email.</p>
-                <p>Regards,<br/>SA UNI HAIR Team</p>
+                <p>Regards, <br/> SA UNI HAIR Team</p>
                 </div>
             `
         })

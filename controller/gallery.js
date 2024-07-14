@@ -119,7 +119,6 @@ exports.galleriesDetails = async (req, res, next ) => {
 
 exports.galleryDelete = async (req, res, next) => {
     try {
-        console.log(req.params.id)
         const {id} = req.params;
 
         const isGalleryExist = await Gallery.findById(id);

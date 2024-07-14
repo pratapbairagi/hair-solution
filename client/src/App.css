@@ -5,6 +5,9 @@
   text-align: center;
   /* color: rgba(225, 225, 225, 0.454); */
 }
+::-webkit-scrollbar{
+  width: 0;
+}
 
 .App-logo {
   height: 40vmin;
